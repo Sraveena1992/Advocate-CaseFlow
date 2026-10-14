@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advocate CaseFlow - Professional</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{font-family:'Inter',sans-serif;background:#f8fafc}
+.timeline-line{position:relative;padding-left:22px;border-left:2px solid #e2e8f0;margin-left:6px}
+.timeline-dot{position:absolute;left:-7px;top:5px;width:12px;height:12px;border-radius:50%;border:2px solid white;box-shadow:0 0 0 2px #e2e8f0}
+</style>
+</head>
+<body>
+
+<div id="authPage" class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+  <div class="w-full max-w-6xl">
+    <div class="text-center mb-8">
+      <h1 class="text-4xl font-bold text-white">Advocate CaseFlow</h1>
+      <p class="text-slate-400 text-sm mt-2">Case Management, Client Portal & Payment Tracking</p>
+    </div>
+    <div class="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+      <div class="bg-white rounded-[20px] p-8 shadow-2xl">
+        <div class="flex items-center gap-3 mb-6">
+          <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold">A</div>
+          <div><h2 class="font-bold text-[15px]">Advocate Portal</h2><p class="text-[12px] text-slate-500">For Legal Professionals</p></div>
+        </div>
+        <div class="space-y-4">
+          <div><label class="text-[11px] font-semibold text-slate-600 uppercase">Mobile Number</label><input id="advPhone" placeholder="Enter registered mobile number" class="mt-1 w-full border border-slate-200 rounded-xl px-4 py-3 text-sm"></div>
+          <div><label class="text-[11px] font-semibold text-slate-600 uppercase">Password</label><input id="advPass" type="password" placeholder="Enter password" class="mt-1 w-full border border-slate-200 rounded-xl px-4 py-3 text-sm"></div>
+          <div><label class="text-[11px] font-semibold text-slate-600 uppercase">Full Name</label><input id="advName" placeholder="Adv. John Doe" class="mt-1 w-full border border-slate-200 rounded-xl px-4 py-3 text-sm"></div>
+          <div class="grid grid-cols-2 gap-3 pt-2"><button onclick="advLogin()" class="bg-slate-900 text-white rounded-xl py-3.5 text-[13px] font-semibold">LOGIN</button><button onclick="advRegister()" class="bg-white border rounded-xl py-3.5 text-[13px] font-semibold">REGISTER</button></div>
+          <p id="advMsg" class="text-xs text-center text-red-500"></p>
+        </div>
+      </div>
+      <div class="bg-white rounded-[20px] p-8 shadow-2xl">
+        <div class="flex items-center gap-3 mb-6"><div class="w-10 h-10 bg-emerald-600 rounded-xl flex items-center justify-center text-white font-bold">C</div><div><h2 class="font-bold text-[15px]">Client Portal</h2><p class="text-[12px] text-slate-500">Track your case & payments</p></div></div>
+        <div class="bg-slate-50 border rounded-xl p-3 mb-4"><p class="text-[11px] text-slate-600">Login using <b>Advocate ID</b> and your <b>Mobile Number</b> provided by your Advocate.</p></div>
+        <div class="space-y-4">
+          <div><label class="text-[11px] font-semibold uppercase">Advocate ID</label><input id="advIdForClient" placeholder="Advocate's registered mobile number" class="mt-1 w-full border-2 border-slate-200 rounded-xl px-4 py-3 text-sm"><p class="text-[10px] text-slate-400 mt-1">Provided by your Advocate</p></div>
+          <div><label class="text-[11px] font-semibold uppercase">Client Mobile Number</label><input id="cliPhone" placeholder="Your registered mobile number" class="mt-1 w-full border-2 border-emerald-200 bg-emerald-50/30 rounded-xl px-4 py-3 text-sm" type="tel"></div>
+          <div class="pt-2"><button onclick="clientLogin()" class="w-full bg-emerald-600 text-white rounded-xl py-3.5 text-[13px] font-semibold">ACCESS MY CASES</button></div>
+          <p id="cliMsg" class="text-xs text-center text-red-500"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="advDashboard" class="hidden min-h-screen bg-slate-50">
+  <header class="bg-white border-b sticky top-0 z-20"><div class="max-w-7xl mx-auto px-6 py-4 flex justify-between"><div><h1 class="font-bold text-[14px]">CaseFlow</h1><p id="advInfo" class="text-[11px] text-slate-500"></p></div><div class="flex gap-3"><span class="text-[11px] bg-slate-900 text-white px-3 py-1.5 rounded-full">WORKFLOW LOCKED</span><button onclick="logout()" class="text-[12px]">Logout</button></div></div></header>
+  <main class="max-w-7xl mx-auto p-6">
+    <div class="grid grid-cols-2 md:grid-cols-6 gap-4 mb-6">
+      <div class="bg-white rounded-2xl border p-4"><p class="text-[10px] font-semibold text-slate-400 uppercase">New</p><p id="statNew" class="text-2xl font-bold">0</p></div>
+      <div class="bg-white rounded-2xl border p-4"><p class="text-[10px] font-semibold text-slate-400 uppercase">Progress</p><p id="statProgress" class="text-2xl font-bold text-blue-600">0</p></div>
+      <div class="bg-white rounded-2xl border p-4"><p class="text-[10px] font-semibold text-slate-400 uppercase">Review</p><p id="statReview" class="text-2xl font-bold text-amber-600">0</p></div>
+      <div class="bg-white rounded-2xl border p-4"><p class="text-[10px] font-semibold text-slate-400 uppercase">Won</p><p id="statWon" class="text-2xl font-bold text-emerald-600">0</p></div>
+      <div class="bg-white rounded-2xl border p-4"><p class="text-[10px] font-semibold text-slate-400 uppercase">Lost</p><p id="statLost" class="text-2xl font-bold text-red-600">0</p></div>
+      <div class="bg-slate-900 rounded-2xl p-4 text-white"><p class="text-[10px] text-white/60 uppercase">Total Revenue</p><p id="statFees" class="text-2xl font-bold">₹0</p><p id="statPending" class="text-[11px] text-white/70">Pending: ₹0</p></div>
+    </div>
+    <div class="grid lg:grid-cols-3 gap-6">
+      <div class="lg:col-span-1">
+        <div class="bg-white rounded-2xl border p-6 sticky top-[88px]">
+          <h3 class="font-semibold text-[13px] uppercase mb-4">Add New Case</h3>
+          <div class="space-y-3">
+            <input id="caseNo" placeholder="Case Number *" class="w-full border rounded-xl px-4 py-2.5 text-[13px]">
+            <input id="clientName" placeholder="Client Name *" class="w-full border rounded-xl px-4 py-2.5 text-[13px]">
+            <input id="clientPhone" placeholder="Client Mobile * (Login ID)" class="w-full border-2 border-blue-200 bg-blue-50/30 rounded-xl px-4 py-2.5 text-[13px]">
+            <div class="grid grid-cols-2 gap-2"><select id="court" class="w-full border rounded-xl px-3 py-2.5 text-[13px] bg-white"><option value="">Court</option><option>Supreme Court</option><option>High Court</option><option>District Court</option><option>Family Court</option><option>Civil Court</option></select><select id="caseType" class="w-full border rounded-xl px-3 py-2.5 text-[13px] bg-white"><option value="">Case Type</option><option>Civil</option><option>Criminal</option><option>Family</option><option>Property</option><option>Other</option></select></div>
+            <input id="caseDate" type="date" class="w-full border rounded-xl px-4 py-2.5 text-[13px]">
+            <div class="border-t pt-4"><p class="text-[11px] font-semibold uppercase mb-3">Payment</p><input id="totalFees" type="number" placeholder="Total Fees ₹" class="w-full border rounded-xl px-4 py-2.5 text-[13px]"><div class="grid grid-cols-2 gap-2 mt-2"><input id="paidFees" type="number" placeholder="Advance Paid ₹" class="border rounded-xl px-4 py-2.5 text-[13px]"><select id="paymentMethod" class="w-full border rounded-xl px-3 py-2.5 text-[13px] bg-white"><option value="">Method</option><option>Cash</option><option>UPI</option><option>Bank Transfer</option></select></div></div>
+            <textarea id="details" placeholder="Initial description" class="w-full border rounded-xl px-4 py-2.5 text-[13px] h-20"></textarea>
+            <button onclick="addCase()" class="w-full bg-slate-900 text-white rounded-xl py-3 text-[13px] font-semibold">CREATE CASE & CLIENT ACCESS</button>
+          </div>
+        </div>
+      </div>
+      <div class="lg:col-span-2">
+        <div class="bg-white rounded-2xl border p-6">
+          <div class="flex justify-between items-center mb-4"><h3 class="font-semibold text-[13px] uppercase">Cases - Workflow Timeline</h3><select id="filterStatus" onchange="loadCases()" class="border rounded-lg px-3 py-1.5 text-xs bg-white"><option value="All">All Stages</option><option value="New">New</option><option value="Progress">Progress</option><option value="Review">Review</option><option value="Won">Won</option><option value="Lost">Lost</option></select></div>
+          <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 mb-4"><p class="text-[11px] text-amber-800">Workflow: New → Progress → Review → Won/Lost (Final). Reverse movement restricted.</p></div>
+          <div id="caseList" class="space-y-5"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="clientDashboard" class="hidden min-h-screen bg-slate-50">
+  <header class="bg-white border-b"><div class="max-w-5xl mx-auto px-6 py-4 flex justify-between"><div><h1 class="font-bold text-[14px]">Client Case Portal</h1><p id="clientInfo" class="text-[11px] text-slate-500"></p></div><button onclick="logout()" class="text-[12px]">Logout</button></div></header>
+  <main class="max-w-5xl mx-auto p-6"><div id="clientCaseList" class="space-y-5"></div></main>
+</div>
+
+<div id="paymentModal" class="hidden fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-2xl p-6 w-full max-w-sm"><h3 class="font-bold text-[14px] mb-1">Add Payment</h3><p id="payCaseInfo" class="text-[11px] text-slate-500 mb-4"></p><div class="space-y-3"><input id="addPayAmount" type="number" placeholder="Amount ₹" class="w-full border rounded-xl px-4 py-3 text-sm"><select id="addPayMethod" class="w-full border rounded-xl px-4 py-3 text-sm bg-white"><option>Cash</option><option>UPI</option><option>Bank Transfer</option><option>Cheque</option></select><input id="addPayNote" placeholder="Note" class="w-full border rounded-xl px-4 py-3 text-sm"><div class="grid grid-cols-2 gap-3 pt-2"><button onclick="closePayModal()" class="border rounded-xl py-3 text-[13px]">Cancel</button><button onclick="confirmAddPayment()" class="bg-slate-900 text-white rounded-xl py-3 text-[13px]">Add Payment</button></div></div></div>
+</div>
+
+<div id="statusModal" class="hidden fixed inset-0 bg-slate-900/60 z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-2xl p-6 w-full max-w-md"><h3 class="font-bold text-[14px] mb-1">Update Case Stage</h3><p id="statusCaseInfo" class="text-[11px] text-slate-500 mb-4"></p><div class="space-y-4"><div class="bg-slate-50 rounded-xl p-3"><p class="text-[11px] text-slate-500">Moving to</p><p id="newStatusLabel" class="font-bold text-[14px]"></p></div><div><label class="text-[11px] font-semibold uppercase">Stage Description *</label><textarea id="stageDescription" placeholder="Describe what happened in this stage" class="mt-1 w-full border rounded-xl px-4 py-3 text-[13px] h-28"></textarea></div><div class="grid grid-cols-2 gap-3"><button onclick="closeStatusModal()" class="border rounded-xl py-3 text-[13px]">Cancel</button><button onclick="confirmStatusChange()" class="bg-slate-900 text-white rounded-xl py-3 text-[13px]">Update Stage</button></div></div></div>
+</div>
+
+<script>
+let currentUser=null,currentRole=null,pendingStatusChange={},pendingPayment={};
+function allowedNext(cur){if(cur==='New')return['Progress','Review','Won','Lost'];if(cur==='Progress')return['Review','Won','Lost'];if(cur==='Review')return['Won','Lost'];return[];}
+function init(){const s=localStorage.getItem('cf_current');if(s){try{const u=JSON.parse(s);currentUser=u;currentRole=u.role;if(u.role==='advocate')showAdvDash();else showClientDash();}catch{}}}
+function advRegister(){const ph=advPhone.value.trim(),pa=advPass.value.trim(),na=advName.value.trim();if(!ph||!pa||!na){advMsg.innerText='All fields required';return;}localStorage.setItem('adv_user_'+ph,JSON.stringify({phone:ph,password:pa,name:na}));localStorage.setItem('cf_current',JSON.stringify({phone:ph,name:na,role:'advocate'}));currentUser={phone:ph,name:na};currentRole='advocate';showAdvDash();}
+function advLogin(){const ph=advPhone.value.trim(),pa=advPass.value.trim();let user=null;for(let i=0;i<localStorage.length;i++){try{let v=JSON.parse(localStorage.getItem(localStorage.key(i)));if(v&&v.phone===ph&&v.password===pa){user=v;break;}}catch{}}if(!user){let l=localStorage.getItem('adv_user_'+ph);if(l){try{let u=JSON.parse(l);if(u.password===pa)user=u;}catch{}}}if(!user){advMsg.innerText='Account not found';return;}currentUser={phone:user.phone,name:user.name};currentRole='advocate';localStorage.setItem('cf_current',JSON.stringify({phone:user.phone,name:user.name,role:'advocate'}));showAdvDash();}
+function clientLogin(){const advId=advIdForClient.value.trim(),cPhone=cliPhone.value.trim();if(!advId||!cPhone){cliMsg.innerText='Advocate ID and Mobile required';return;}let found=false,clientName='Client',advName='Advocate';for(let i=0;i<localStorage.length;i++){let k=localStorage.key(i);if(k&&k.startsWith('cf_cases_')){try{let cs=JSON.parse(localStorage.getItem(k));let m=cs.find(c=>c.advocatePhone===advId&&c.clientPhone===cPhone);if(m){found=true;clientName=m.clientName;advName=m.advocateName;break;}}catch{}}}let cu=localStorage.getItem('client_user_'+cPhone);if(cu){try{let u=JSON.parse(cu);if(u.advocatePhone===advId||!found){found=true;clientName=u.name||clientName;}}catch{}}if(!found){cliMsg.innerText='No case found for this Advocate ID + Mobile';return;}localStorage.setItem('client_user_'+cPhone,JSON.stringify({phone:cPhone,name:clientName,advocatePhone:advId,advocateName:advName}));currentUser={phone:cPhone,name:clientName,advocatePhone:advId,advocateName:advName};currentRole='client';localStorage.setItem('cf_current',JSON.stringify({phone:cPhone,name:clientName,role:'client',advocatePhone:advId,advocateName:advName}));showClientDash();}
+function showAdvDash(){authPage.classList.add('hidden');advDashboard.classList.remove('hidden');clientDashboard.classList.add('hidden');advInfo.innerText=currentUser.name+' • '+currentUser.phone;loadCases();}
+function showClientDash(){authPage.classList.add('hidden');advDashboard.classList.add('hidden');clientDashboard.classList.remove('hidden');clientInfo.innerText=currentUser.name+' • '+currentUser.phone+' • Advocate: '+(currentUser.advocateName||currentUser.advocatePhone||'');loadClientCases();}
+function logout(){localStorage.removeItem('cf_current');location.reload();}
+function addCase(){const cn=caseNo.value.trim(),cl=clientName.value.trim(),cph=clientPhone.value.trim();if(!cn||!cl||!cph){alert('Case No, Client Name, Mobile required');return;}const cur=JSON.parse(localStorage.getItem('cf_current'));const data={id:Date.now().toString(),advocatePhone:cur.phone,advocateName:cur.name,caseNo:cn,clientName:cl,clientPhone:cph,court:court.value,caseType:caseType.value,status:'New',caseDate:caseDate.value,totalFees:totalFees.value||'0',paidFees:paidFees.value||'0',paymentMethod:paymentMethod.value||'',createdAt:Date.now(),history:[{status:'New',description:details.value||'Case filed',date:new Date().toLocaleString()}],payments:(parseInt(paidFees.value||0)>0)?[{amount:paidFees.value,date:new Date().toLocaleString(),method:paymentMethod.value||'Initial',note:'Advance'}]:[]};let all=JSON.parse(localStorage.getItem('cf_cases_'+cur.phone)||'[]');all.push(data);localStorage.setItem('cf_cases_'+cur.phone,JSON.stringify(all));localStorage.setItem('client_user_'+cph,JSON.stringify({phone:cph,name:cl,advocatePhone:cur.phone,advocateName:cur.name}));caseNo.value='';clientName.value='';clientPhone.value='';court.value='';caseType.value='';caseDate.value='';details.value='';totalFees.value='';paidFees.value='';paymentMethod.value='';alert('Created! Client Login: Advocate ID '+cur.phone+' + Mobile '+cph);loadCases();}
+function loadCases(){const cur=JSON.parse(localStorage.getItem('cf_current'));let cases=JSON.parse(localStorage.getItem('cf_cases_'+cur.phone)||'[]');const filter=filterStatus.value;let filtered=filter==='All'?cases:cases.filter(c=>c.status===filter);statNew.innerText=cases.filter(c=>c.status==='New').length;statProgress.innerText=cases.filter(c=>c.status==='Progress').length;statReview.innerText=cases.filter(c=>c.status==='Review').length;statWon.innerText=cases.filter(c=>c.status==='Won').length;statLost.innerText=cases.filter(c=>c.status==='Lost').length;let tot=0,pend=0;cases.forEach(c=>{tot+=parseInt(c.totalFees||0);let paid=0;(c.payments||[]).forEach(p=>paid+=parseInt(p.amount||0));pend+=(parseInt(c.totalFees||0)-paid);});statFees.innerText='₹'+tot.toLocaleString('en-IN');statPending.innerText='Pending: ₹'+pend.toLocaleString('en-IN');let html='';filtered.sort((a,b)=>b.createdAt-a.createdAt).forEach(c=>{let paid=0;(c.payments||[]).forEach(p=>paid+=parseInt(p.amount||0));let pending=parseInt(c.totalFees||0)-paid;let isFinal=c.status==='Won'||c.status==='Lost';let allowed=allowedNext(c.status);let optionsHtml=isFinal?`<span class="text-[11px] bg-slate-900 text-white px-3 py-1.5 rounded-full">FINAL - ${c.status.toUpperCase()} • LOCKED</span>`:`<select onchange="openStatusModal('${c.id}',this.value)" class="text-xs border rounded-xl px-3 py-2 bg-white font-medium"><option value="">Move to next stage →</option>${allowed.map(s=>`<option value="${s}">${s}</option>`).join('')}</select>`;let historyHtml=(c.history||[]).map(h=>`<div class="timeline-line py-2.5"><div class="timeline-dot ${h.status==='New'?'bg-slate-400':h.status==='Progress'?'bg-blue-500':h.status==='Review'?'bg-amber-500':h.status==='Won'?'bg-emerald-500':'bg-red-500'}"></div><p class="text-[11px] font-semibold uppercase">${h.status} • ${h.date}</p><p class="text-[13px] text-slate-700 mt-1">${h.description}</p></div>`).join('');let payHtml=(c.payments||[]).map(p=>`<div class="flex justify-between py-2 border-b last:border-0"><div><p class="text-[12px] font-semibold">₹${parseInt(p.amount).toLocaleString('en-IN')} • ${p.method}</p><p class="text-[10px] text-slate-400">${p.note||''}</p></div><p class="text-[10px] text-slate-500">${p.date}</p></div>`).join('');html+=`<div class="border rounded-2xl p-5 bg-white"><div class="flex justify-between gap-4"><div class="flex-1"><p class="font-bold text-[14px]">${c.caseNo} <span class="ml-2 text-[10px] px-2.5 py-1 rounded-full ${c.status==='New'?'bg-slate-100':c.status==='Progress'?'bg-blue-50 text-blue-700':c.status==='Review'?'bg-amber-50 text-amber-700':c.status==='Won'?'bg-emerald-50 text-emerald-700':'bg-red-50 text-red-700'}">${c.status.toUpperCase()}</span></p><p class="text-[13px] mt-2">Client: <span class="font-semibold">${c.clientName}</span> (${c.clientPhone})</p><p class="text-[11px] text-slate-500">${c.court||''} • ${c.caseType||''}</p></div><div class="flex flex-col gap-2 items-end min-w-[160px]">${optionsHtml}<button onclick="openPayModal('${c.id}')" class="w-full bg-white border text-[12px] font-medium px-4 py-2 rounded-xl">+ Add Payment</button><button onclick="delCase('${c.id}')" class="text-[11px] text-slate-400">Delete</button></div></div><div class="mt-5 grid md:grid-cols-2 gap-6"><div><p class="text-[11px] font-semibold uppercase text-slate-500 mb-3">Case Timeline</p><div class="bg-slate-50/50 rounded-xl p-3 border">${historyHtml}</div></div><div><p class="text-[11px] font-semibold uppercase text-slate-500 mb-3">Payment - Total / Paid / Remaining</p><div class="bg-slate-900 rounded-xl p-4 text-white"><div class="grid grid-cols-3 gap-3"><div><p class="text-[10px] text-white/60 uppercase">Total</p><p class="font-bold text-[14px] mt-1">₹${parseInt(c.totalFees||0).toLocaleString('en-IN')}</p></div><div><p class="text-[10px] text-white/60 uppercase">Paid</p><p class="font-bold text-[14px] mt-1 text-emerald-300">₹${paid.toLocaleString('en-IN')}</p></div><div><p class="text-[10px] text-white/60 uppercase">Pending</p><p class="font-bold text-[14px] mt-1 text-red-300">₹${pending.toLocaleString('en-IN')}</p></div></div><div class="mt-4 bg-white/10 rounded-xl p-3 max-h-32 overflow-auto">${payHtml||'<p class="text-[11px] text-white/50">No payments</p>'}</div></div></div></div></div>`;});caseList.innerHTML=html||'<p class="text-sm text-center py-16 text-slate-400">No cases yet</p>';}
+function openStatusModal(id,newStatus){if(!newStatus)return;const cur=JSON.parse(localStorage.getItem('cf_current'));let all=JSON.parse(localStorage.getItem('cf_cases_'+cur.phone)||'[]');let c=all.find(x=>x.id===id);pendingStatusChange={id,newStatus};statusCaseInfo.innerText=c.caseNo+' • '+c.status+' → '+newStatus;newStatusLabel.innerText=newStatus;stageDescription.value='';statusModal.classList.remove('hidden');}
+function closeStatusModal(){statusModal.classList.add('hidden');loadCases();}
+function confirmStatusChange(){const desc=stageDescription.value.trim();if(!desc){alert('Description mandatory for each stage');return;}const cur=JSON.parse(localStorage.getItem('cf_current'));let all=JSON.parse(localStorage.getItem('cf_cases_'+cur.phone)||'[]');all=all.map(x=>{if(String(x.id)===String(pendingStatusChange.id)){if(!x.history)x.history=[];x.history.push({status:pendingStatusChange.newStatus,description:desc,date:new Date().toLocaleString()});x.status=pendingStatusChange.newStatus;}return x;});localStorage.setItem('cf_cases_'+cur.phone,JSON.stringify(all));closeStatusModal();}
+function openPayModal(id){const cur=JSON.parse(localStorage.getItem('cf_current'));let all=JSON.parse(localStorage.getItem('cf_cases_'+cur.phone)||'[]');let c=all.find(x=>x.id===id);let paid=0;(c.payments||[]).forEach(p=>paid+=parseInt(p.amount||0));let pending=parseInt(c.totalFees||0)-paid;pendingPayment={id};payCaseInfo.innerText=c.caseNo+' • Total: ₹'+c.totalFees+' • Paid: ₹'+paid+' • Remaining: ₹'+pending;addPayAmount.value='';addPayNote.value='';paymentModal.classList.remove('hidden');}
+function closePayModal(){paymentModal.classList.add('hidden');}
+function confirmAddPayment(){const amt=addPayAmount.value.trim();if(!amt||parseInt(amt)<=0){alert('Enter amount');return;}const cur=JSON.parse(localStorage.getItem('cf_current'));let all=JSON.parse(localStorage.getItem('cf_cases_'+cur.phone)||'[]');all=all.map(x=>{if(String(x.id)===String(pendingPayment.id)){if(!x.payments)x.payments=[];x.payments.push({amount:amt,date:new Date().toLocaleString(),method:addPayMethod.value,note:addPayNote.value||''});}return x;});localStorage.setItem('cf_cases_'+cur.phone,JSON.stringify(all));closePayModal();loadCases();}
+function delCase(id){if(!confirm('Delete?'))return;const cur=JSON.parse(localStorage.getItem('cf_current'));let all=JSON.parse(localStorage.getItem('cf_cases_'+cur.phone)||'[]');all=all.filter(x=>String(x.id)!==String(id));localStorage.setItem('cf_cases_'+cur.phone,JSON.stringify(all));loadCases();}
+function loadClientCases(){const cur=JSON.parse(localStorage.getItem('cf_current'));let myCases=[];for(let i=0;i<localStorage.length;i++){let k=localStorage.key(i);if(k&&k.startsWith('cf_cases_')){try{let cs=JSON.parse(localStorage.getItem(k));cs.forEach(c=>{if(c.advocatePhone===cur.advocatePhone&&c.clientPhone===cur.phone)myCases.push(c);});}catch{}}}let html='';if(myCases.length===0)html='<div class="bg-white rounded-2xl border p-12 text-center"><p class="text-sm text-slate-500">No cases found for Advocate ID '+cur.advocatePhone+' + Mobile '+cur.phone+'</p></div>';else myCases.forEach(c=>{let paid=0;(c.payments||[]).forEach(p=>paid+=parseInt(p.amount||0));let pending=parseInt(c.totalFees||0)-paid;let hist=(c.history||[]).map(h=>`<div class="timeline-line py-2.5"><div class="timeline-dot bg-blue-500"></div><p class="text-[11px] font-semibold uppercase">${h.status} • ${h.date}</p><p class="text-[13px] mt-1">${h.description}</p></div>`).join('');html+=`<div class="bg-white border rounded-2xl p-6"><div class="flex justify-between"><div><p class="font-bold">${c.caseNo} <span class="text-[11px] ml-2 px-2.5 py-1 rounded-full ${c.status==='Won'?'bg-emerald-50 text-emerald-700':c.status==='Lost'?'bg-red-50 text-red-700':'bg-slate-100'}">${c.status.toUpperCase()} ${c.status==='Won'||c.status==='Lost'?'(FINAL LOCKED)':''}</span></p><p class="text-[13px] mt-2">Advocate: ${c.advocateName} (${c.advocatePhone})</p></div><div class="text-right"><p class="text-[10px] uppercase">Payment</p><p class="text-[13px] font-bold">Total ₹${c.totalFees}</p><p class="text-[13px] text-emerald-600">Paid ₹${paid}</p><p class="text-[13px] text-red-600 font-bold">Pending ₹${pending}</p></div></div><div class="mt-6"><p class="text-[11px] font-semibold uppercase text-slate-500 mb-3">Case Journey</p><div class="bg-slate-50 rounded-xl p-4 border">${hist}</div></div></div>`;});clientCaseList.innerHTML=html;}
+init();
+</script>
+</body>
+</html>
